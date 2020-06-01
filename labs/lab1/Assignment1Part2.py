@@ -25,7 +25,7 @@ print(d2)
 
 while True:
     try:
-        s = input("Please enter a fitness item:\n")
+        s = input("Please enter a fitness item:\n").lower()
         print(d1[s])
         print(d2[s])
     except KeyError:
