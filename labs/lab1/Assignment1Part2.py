@@ -1,3 +1,9 @@
+# Assignment 1: Part 2
+# GROUP 43:
+# Lalitha Devi Pulagam	105159977
+# Nikhitha Inturi		110008508
+# Quoc Dat Lam		    105190512
+
 fit_items = ['treadmill', 'lifting bars', 'exercise bikes', 'weights', 'rigs', 'dumbbells', 'gym mats', 'steppers',
              'exercise balls', 'rowing machine', 'bands & tubing', 'home gym']
 
@@ -12,6 +18,8 @@ d1 = {}
 # item quantity dict
 d2 = {}
 # assume there are no duplicated fit items in catalog.txt
+# for each item in fit_items list, find its category and quantity in file_as_list
+# build two dicts d1 and d2 for category and quantity respectively
 for item in fit_items:
     if item in file_as_list:
         item_index = file_as_list.index(item)
@@ -29,12 +37,16 @@ while True:
         print(d1[s])
         print(d2[s])
     except KeyError:
+        # if key not found in dicts, then KeyError is thrown
+        # continue to ask users to key in correct items
         print("Invalid Key")
         continue
     except EOFError:
+        # Ctrl + D is pressed
         print("Exit")
         break
 
+    # Ask for another search
     opt = input("Another search?(yes/no)\n")
     if opt == 'yes':
         continue
