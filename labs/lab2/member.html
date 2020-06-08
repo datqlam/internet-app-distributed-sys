@@ -3,24 +3,14 @@
 <html lang="en">
 
 <head>
-
-<style>
-
-body {text-align: center; background-image: url("img/Background.jpg"); height: 70%; background-size: cover; background-position: center; background-attachment: fixed;}
-h1 {text-align: center; font-size: 50px; font-family: serif; color: white;}
-h2 {text-align: center; font-size: 40px; font-family: serif; color: white;}
-h3.myh3 {text-align: center; font-size: 20px; font-family: serif; color: white;}
-li.hbar1 {display: inline-block; font-size: 20px; padding: 15px 40px; background-color: transparent; border: 1px solid white;}
-p {font-size: 20px; padding: 5px 5px; background-color: transparent;}
-
-</style>
+         <title>Membership</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
 
 </head>
 
     <body>
     	<h1>FITLIFE FITNESS AND TRAINING CENTER</h1>
-    	<h2>STAY FIT, STAY HEALTHY</h2>
-    	<h3 class="myh3">BE A PROUD MEMEBER OF OUR FAMILY..</h3>
+    	<h2>PURCHASE A MEMBERSHIP</h2>
 
         <div>
         <hr/>
@@ -35,11 +25,55 @@ p {font-size: 20px; padding: 5px 5px; background-color: transparent;}
              </ul>
         <div>
 
-		<p id="para1"><a href = "cardio.html" target="_blank" style="color: white; text-decoration: none;">Cardio</a></p>
+		<form>
+      <fieldset>
+                <legend>Registration Form</legend>
+        <p>
+            <label for="Name">Name:</label>
+            <input type="text" id="fname" name="Name" required><br>
+        </p>
 
-		<p class="para2"><a href = "strength.html" target="_blank" style="color: white; text-decoration: none;">Strength</a></p>
+        <p>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required><br>
+        </p>
 
-		<p style="color: white; text-decoration: none;">Other</p>
+        <p>
+            <label for="address">Address:</label>
+            <textarea name="address" rows="2" cols="25" required></textarea>
+        </p>
+
+        <p>
+                   <label>Type of Membership</label>
+                   <select id = "typeList" required>
+                     <option value = "1">Monthly Pay-As-You-Go</option>
+                     <option value = "2">3 Months</option>
+                     <option value = "3">6 Months</option>
+                     <option value = "4">12 Months</option>
+                   </select>
+        </p>
+        <p>
+              <label>Method of payment:</label>
+              <input type="radio" id="Debit" name="fo" value="Debit" required>
+              <label for="Debit">Debit</label>
+              <input type="radio" id="Credit" name="fo" value="Credit" required>
+              <label for="Credit">Credit</label><br>
+        </p>
+          <p>
+              <label>Subscribe to receive email updates about upcoming new promotions and latest news.</label>
+        <input type="checkbox" id="subscribe" name="subscribe">
+        <label for="subscribe">Email</label>
+          </p>
+      </fieldset>
+
+        <br></br>
+      <button onclick="submitFunc()">Submit</button>
+      <script>
+        function submitFunc() {
+          alert("Your Order is submitted Successfully!");
+        }
+        </script>
+    </form>
 
         </div>
 
