@@ -27,6 +27,7 @@ class Course(models.Model):
 class Student(User):
     CITY_CHOICES = [('WS', 'Windsor'), ('CG', 'Calgery'), ('MR', 'Montreal'), ('VC', 'Vancouver')]
     school = models.CharField(max_length=50, null=True, blank=True)
+    address = models.CharField(max_length=300, null=True, blank=True)
     city = models.CharField(max_length=2, choices=CITY_CHOICES, default='WS')
     interested_in = models.ManyToManyField(Topic)
 
