@@ -2,6 +2,7 @@ from django.db import models
 import datetime
 from django.contrib.auth.models import User
 from django.utils import timezone
+from functools import reduce
 
 
 # Create your models here.
@@ -37,15 +38,28 @@ class Student(User):
 
 class Order(models.Model):
     STATUS_CHOICES = [(0, 'Cancelled'), (1, 'Order Confirmed')]
-    course = models.ForeignKey(Course, related_name='courses', on_delete=models.CASCADE)
+    # course = models.ForeignKey(Course, related_name='courses', on_delete=models.CASCADE)
+    courses = models.ManyToManyField(Course)
     Student = models.ForeignKey(Student, related_name='student', on_delete=models.CASCADE)
     levels = models.PositiveIntegerField()
     order_status = models.IntegerField(choices=STATUS_CHOICES, default=1)
     order_date = models.DateField(default=datetime.date.today)
 
     def __str__(self):
-        return '{} {} {} {} {} {}'.format(self.course.name, self.Student.first_name, self.Student.last_name, self.levels,
-                                       self.order_status, self.order_date)
+        return '{} {} {} {} {} {} {}'.format(self.Student.first_name, self.Student.last_name,
+                                             self.levels, self.order_status, self.order_date,
+                                             self.total_cost(), self.combined_course_names())
+
+    def combined_course_names(self):
+        course_names = ''
+        for course in self.courses.all():
+            course_names += ' - ' + course.name
+
+        return course_names
 
     def total_cost(self):
-        return self.course.price
+        total_cost = 0
+        for course in self.courses.all():
+            total_cost += course.price
+
+        return total_cost
