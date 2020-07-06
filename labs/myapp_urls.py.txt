@@ -1,0 +1,11 @@
+from django.conf.urls import url
+from django.urls import path
+from myapp import views
+
+app_name = 'myapp'
+
+urlpatterns = [
+    path(r'', views.index, name='index'),
+    path(r'about/', views.about, name='about'),
+    url(r'^(?P<top_no>[1-5]+)/$', views.detail, name='detail'),
+]
