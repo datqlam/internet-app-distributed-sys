@@ -32,7 +32,7 @@ from .models import Topic, Course, Student, Order
 
 def index(request):
     top_list = Topic.objects.all().order_by('id')[:10]
-    return render(request, 'myapp/index0.html', {'top_list': top_list})
+    return render(request, 'myapp/index.html', {'top_list': top_list})
 
 
 # def about(request):
@@ -43,7 +43,7 @@ def index(request):
 
 
 def about(request):
-    return render(request, 'myapp/about0.html')
+    return render(request, 'myapp/about.html')
 
 
 # def detail(request, top_no):
@@ -67,4 +67,4 @@ def detail(request, top_no):
     topic = get_object_or_404(Topic, pk=top_no)
     course_list = Course.objects.all().filter(topic=top_no)
 
-    return render(request, 'myapp/detail0.html', {'topic': topic,'course_list' : course_list})
+    return render(request, 'myapp/detail.html', {'topic': topic,'course_list' : course_list})
