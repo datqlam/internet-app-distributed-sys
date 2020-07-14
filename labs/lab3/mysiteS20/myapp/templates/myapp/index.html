@@ -1,5 +1,5 @@
 {% extends 'myapp/base.html' %}
-{% block myhdg %}Hello Dat {% endblock %}
+{% block myhdg %}Hello {{ user.first_name }} {% endblock %}
 {% block body_block %}
     {% if top_list %}
           <h2>List of Topics</h2>

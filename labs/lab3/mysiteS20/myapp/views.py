@@ -32,7 +32,9 @@ from .models import Topic, Course, Student, Order
 
 def index(request):
     top_list = Topic.objects.all().order_by('id')[:10]
-    return render(request, 'myapp/index.html', {'top_list': top_list})
+    current_user = request.user
+
+    return render(request, 'myapp/index.html', {'top_list': top_list, 'user': current_user})
 
 
 # def about(request):
