@@ -24,3 +24,12 @@ def detail(request, top_no):
     course_list = Course.objects.all().filter(topic=top_no)
 
     return render(request, 'myapp/detail.html', {'topic': topic, 'course_list': course_list})
+
+
+def courses(request):
+    courlist = Course.objects.all().order_by('id')
+    return render(request, 'myapp/courses.html', {'courlist': courlist})
+
+
+def place_order(request):
+    return HttpResponse("You can place your order here")
