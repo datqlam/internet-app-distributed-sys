@@ -26,8 +26,10 @@ class Course(models.Model):
     def __str__(self):
         return self.name
 
+    # If price is greater than 150.00 => discount 10%
     def discount(self):
-        return self.price * 0.9  # discount 10%
+        self.price = self.price - self.price*10/100  # discount 10%
+        self.save()
 
 
 class Student(User):

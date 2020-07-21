@@ -8,5 +8,6 @@ urlpatterns = [
     path(r'about/', views.about, name='about'),
     path(r'<int:top_no>/', views.detail, name='detail'),
     path(r'courses/', views.courses, name='courses'),
+    path(r'courses/<int:cour_id>/', views.course_detail, name='course_detail'),
     path(r'place_order/', views.place_order, name='place_order'),
 ]

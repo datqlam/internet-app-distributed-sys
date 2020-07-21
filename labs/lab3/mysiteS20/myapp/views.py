@@ -1,8 +1,10 @@
 # Import necessary classes
+from django.conf.urls import url
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 
+from .forms import OrderForm, InterestForm
 from .models import Topic, Course, Student, Order
 
 
@@ -32,4 +34,38 @@ def courses(request):
 
 
 def place_order(request):
-    return HttpResponse("You can place your order here")
+    msg = ''
+    courlist = Course.objects.all()
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            order = form.save(commit=True)
+            if order.levels <= order.courses.first().stages:
+                order.save()
+                msg = 'Your course has been ordered successfully.'
+                # Update course price if it is greater than 150.00
+                if order.courses.first().price > 150.00:
+                    order.courses.first().discount()
+            else:
+                msg = 'You exceeded the number of levels for this course.'
+            return render(request, 'myapp/order_response.html', {'msg': msg})
+    else:
+        form = OrderForm()
+    return render(request, 'myapp/place_order.html', {'form': form, 'msg': msg, 'courlist': courlist})
+
+
+def course_detail(request, cour_id):
+    course = get_object_or_404(Course, pk=cour_id)
+
+    if request.method == 'POST':
+        form = InterestForm(request.POST)
+        if form.is_valid():
+            interest = form.cleaned_data['interested']
+            if interest == '1':
+                course.interested += 1
+                course.save()
+            return index(request)
+    else:
+        form = InterestForm()
+
+    return render(request, 'myapp/course_detail.html', {'form': form, 'course': course})
