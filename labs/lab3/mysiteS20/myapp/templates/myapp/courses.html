@@ -9,6 +9,7 @@
                 <li> <a href="{% url 'myapp:course_detail' course.id %}">{{ course.name}}</a> </li>
             {% endfor %}
         </ol>
+        <a href="{%  url 'myapp:place_order' %}">Place Order</a>
       {% else %}
           <strong>There are no available courses!</strong>
       {% endif %}
