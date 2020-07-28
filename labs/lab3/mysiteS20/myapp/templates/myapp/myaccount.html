@@ -1,0 +1,30 @@
+{% extends 'myapp/base.html' %}
+{% block title %}My Account{% endblock %}
+{% block myhdg %}{% endblock %}
+{% block body_block %}
+    {% if isStudent %}
+        <div>
+            <ul>
+                <li>First Name: {{ student.first_name }}</li>
+                <li>Last Name: {{ student.last_name }}</li>
+            </ul>
+        </div>
+        <h2>List of Interested Topics</h2>
+        <ol>
+            {% for topic in topics %}
+                <li>{{ topic.name}}</li>
+            {% endfor %}
+        </ol>
+
+        <h2>List of Ordered Courses</h2>
+        <ol>
+            {# Courses is a list of tuples #}
+            {% for course in courses %}
+                {# Course name #}
+                <li>{{ course.1 }}</li>
+            {% endfor %}
+        </ol>
+    {% else %}
+        <strong>You are not a registered students</strong>
+    {% endif %}
+{% endblock %}

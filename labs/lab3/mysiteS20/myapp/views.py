@@ -1,8 +1,12 @@
 # Import necessary classes
 from django.conf.urls import url
-from django.http import HttpResponse, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
+
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.urls import reverse
 
 from .forms import OrderForm, InterestForm
 from .models import Topic, Course, Student, Order
@@ -69,3 +73,37 @@ def course_detail(request, cour_id):
         form = InterestForm()
 
     return render(request, 'myapp/course_detail.html', {'form': form, 'course': course})
+
+
+def user_login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        if user:
+            if user.is_active:
+                login(request, user)
+                return HttpResponseRedirect(reverse('myapp:index'))
+            else:
+                return HttpResponse('Your account is disabled.')
+        else:
+            return HttpResponse('Invalid login details.')
+    else:
+        return render(request, 'myapp/login.html')
+
+
+@login_required
+def user_logout(request):
+    logout(request)
+    return HttpResponseRedirect(reverse(('myapp:index')))
+
+@login_required
+def myaccount(request):
+    student = Student.objects.filter(username=request.user.username)
+    if len(student) == 1:
+        topics = Student.objects.filter(username=request.user.username).first().interested_in.all()
+        ordered_courses = Order.objects.filter(Student__username=request.user.username, order_status=1).values_list('courses__id','courses__name')
+
+        return render(request, 'myapp/myaccount.html', {'student': student.first(), 'courses': ordered_courses, 'isStudent': 1, 'topics': topics})
+    else:
+        return render(request, 'myapp/myaccount.html', {'isStudent': 0})
