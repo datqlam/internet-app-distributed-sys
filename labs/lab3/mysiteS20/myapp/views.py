@@ -8,12 +8,18 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 
+from mysiteS20 import settings
 from .forms import OrderForm, InterestForm
 from .models import Topic, Course, Student, Order
+import datetime
 
 
 # Create your views here.
 def index(request):
+    if request.session.test_cookie_worked():
+        print('Test Cookie Worked. Delete it')
+        request.session.delete_test_cookie
+
     top_list = Topic.objects.all().order_by('id')[:10]
     # get current user in request object
     current_user = request.user
@@ -22,7 +28,17 @@ def index(request):
 
 
 def about(request):
-    return render(request, 'myapp/about.html')
+    about_visits = request.COOKIES.get('about_visits', 'default')
+    if about_visits == 'default':
+        response = render(request, 'myapp/about.html', {'about_visits': '1'})
+        response.set_cookie('about_visits', 1, 5*60)
+        # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
+        return response
+    else:
+        about_visits = int(about_visits) + 1
+        response = render(request, 'myapp/about.html', {'about_visits': about_visits})
+        response.set_cookie('about_visits', about_visits)
+        return response
 
 
 def detail(request, top_no):
@@ -82,6 +98,16 @@ def user_login(request):
         user = authenticate(username=username, password=password)
         if user:
             if user.is_active:
+                current_login_time = str(datetime.datetime.now())
+                # session parameter last_login
+                request.session['last_login'] = current_login_time
+                request.session['username'] = username
+                # set session expiry to 1 hour
+                # request.session.set_expiry(3600)
+
+                # set session expiry to 0 to expire session at browser close
+                request.session.set_expiry(0)
+
                 login(request, user)
                 return HttpResponseRedirect(reverse('myapp:index'))
             else:
@@ -89,13 +115,23 @@ def user_login(request):
         else:
             return HttpResponse('Invalid login details.')
     else:
+        # set a test cookie
+        print('Set a test cookie')
+        request.session.set_test_cookie()
         return render(request, 'myapp/login.html')
 
 
 @login_required
 def user_logout(request):
-    logout(request)
-    return HttpResponseRedirect(reverse(('myapp:index')))
+    # logout(request)
+    try:
+        del request.session['last_login']
+        del request.session['username']
+        request.session.flush()
+    except KeyError:
+        pass
+
+    return HttpResponseRedirect(reverse(('myapp:user_login')))
 
 @login_required
 def myaccount(request):

@@ -8,7 +8,17 @@
                 <li> <a href="{% url 'myapp:detail' top.id %}">{{ top.name}}</a> </li>
             {% endfor %}
         </ol>
-      {% else %}
-          <strong>There are no available topics!</strong>
-      {% endif %}
+    {% else %}
+        <strong>There are no available topics!</strong>
+    {% endif %}
+
+    <br/>
+    {% if request.session.last_login%}
+        Last Login {{request.session.last_login}}
+    {% else %}
+        <h2>
+            Your login was more than one hour ago
+        </h2>
+    {% endif %}
+
 {% endblock %}
