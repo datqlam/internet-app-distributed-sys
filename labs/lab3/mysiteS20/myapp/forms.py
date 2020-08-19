@@ -1,5 +1,7 @@
 from django import forms
-from myapp.models import Order
+from django.contrib.auth.forms import UserCreationForm
+
+from myapp.models import Order, Student
 from django.core.validators import MinValueValidator
 
 
@@ -18,3 +20,10 @@ class InterestForm(forms.Form):
     interested = forms.ChoiceField(widget=forms.RadioSelect, choices=CHOICES)
     levels = forms.IntegerField(initial=1, validators=[MinValueValidator(1)])
     comments = forms.CharField(label="Additional Comments", widget=forms.Textarea, required=False)
+
+
+# Register form
+class RegisterForm(UserCreationForm):
+    class Meta:
+        model = Student
+        fields = ('username', 'first_name', 'last_name', 'city', 'interested_in')

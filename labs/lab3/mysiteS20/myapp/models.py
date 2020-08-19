@@ -18,6 +18,7 @@ class Course(models.Model):
     topic = models.ForeignKey(Topic, related_name='courses', on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     price = models.DecimalField(max_digits=10, decimal_places=2)
+    hours = models.PositiveIntegerField(default=0)
     for_everyone = models.BooleanField(default=True)
     description = models.TextField(max_length=300, null=True, blank=True)
     interested = models.PositiveIntegerField(default=0)
